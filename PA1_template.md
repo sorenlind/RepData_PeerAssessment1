@@ -3,12 +3,13 @@ Søren Lind Kristiansen
 
 ## Notes
 Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package `dplyr` so we have to load that using `library(dplyr)`. Secondly, when pushing to GitHub, we need our figure files stored in a folder called `figures`
-so we might as well make our code store them there for us. We can make it happen by using `opts_chunk` which in turn requires loading the `knitr` library explicitly. Here's how it's done:
+so we might as well make our code store them there for us. We can make it happen by using `opts_chunk` which in turn requires loading the `knitr` library explicitly. Finally we load `lattice` to be able to use `xyplot`. Here's how it's done:
 
 ```r
 suppressMessages(library(dplyr))
 suppressMessages(library(knitr))
 opts_chunk$set(fig.path = "./figures/")
+library(lattice)
 ```
 (In case you wonder why the `library` calls are put inside a call to `supressMessage`, it's just to not have the output made when loading the packages show up in the document. Alternatively, we could achieve this by specifying `{r echo=FALSE}` but the project text specifcially mentions that all code blocks should begin with `{r echo=TRUE}`.)
 
@@ -94,7 +95,7 @@ intervalMeans <- activity %>%
 Using the base plotting system we can plot the activity pattern like so:
 
 ```r
-plot(intervalMeans, type = "l", ylab = "Mean step count")
+plot(intervalMeans, type = "l", ylab = "Number of steps")
 ```
 
 ![](./figures/meansplot-1.png) 
@@ -225,31 +226,26 @@ activityImputed$dayType <- as.factor(sapply(activityImputed$date, FUN=dayType))
 ```
 
 ### Filtering, grouping and calculating means
-Now all we need to is filter the data by our new "dayType" variable, group by 5-minute interval and then calculate the means -- all using `dplyr`:
+Now all we need to is group the data by our new "dayType" variable as well as the  5-minute interval and then calculate the means -- all using `dplyr`:
 
 ```r
-intervalMeansWeekend <- activityImputed %>%
-  filter(dayType == "weekend") %>%
-  group_by(interval) %>%
-  summarise(steps=mean(steps)) %>%
-  arrange(interval)
-
-intervalMeansWeekdays <- activityImputed %>%
-  filter(dayType == "weekday") %>%
-  group_by(interval) %>%
+intervalMeansImputed <- activityImputed %>%
+  group_by(interval, dayType) %>%
   summarise(steps=mean(steps)) %>%
   arrange(interval)
 ```
-
 
 ### Panel plot
 Finally we can make our panel plot:
 
 ```r
-par(mfrow=c(2,1)) 
-plot(intervalMeansWeekdays, type = "l", main = "Weekdays")
-plot(intervalMeansWeekend, type = "l", main = "Weekend")
+xyplot(
+  steps~interval|dayType,
+  intervalMeansImputed,
+  type = "l",
+  layout = c(1, 2),
+  xlab = "Interval",
+  ylab = "Number of steps")
 ```
 
 ![](./figures/panelplot-1.png) 
-
