@@ -8,12 +8,12 @@ output:
 Søren Lind Kristiansen
 
 ## Notes
-Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package `dplyr` so we have to load that using `library(dplyr)`. Secondly, when pushing to GitHub, we need our figure files stored in a folder called `figures`
+Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package `dplyr` so we have to load that using `library(dplyr)`. Secondly, when pushing to GitHub, we need our figure files stored in a folder called `figure`
 so we might as well make our code store them there for us. We can make it happen by using `opts_chunk` which in turn requires loading the `knitr` library explicitly. Finally we load `lattice` to be able to use `xyplot`. Here's how it's done:
 ```{r echo=TRUE}
 suppressMessages(library(dplyr))
 suppressMessages(library(knitr))
-opts_chunk$set(fig.path = "./figures/")
+opts_chunk$set(fig.path = "./figure/")
 library(lattice)
 ```
 (In case you wonder why the `library` calls are put inside a call to `supressMessage`, it's just to not have the output made when loading the packages show up in the document. Alternatively, we could achieve this by specifying `{r echo=FALSE}` but the project text specifcially mentions that all code blocks should begin with `{r echo=TRUE}`.)
