@@ -2,8 +2,8 @@
 Søren Lind Kristiansen
 
 ## Notes
-Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package `dplyr` so we have to load that using `library(dplyr)`. Secondly, when pushing to GitHub, we need our figure files stored in a folder called `figure`
-so we might as well make our code store them there for us. We can make it happen by using `opts_chunk` which in turn requires loading the `knitr` library explicitly. Finally we load `lattice` to be able to use `xyplot`. Here's how it's done:
+Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package `dplyr` so we have to load that by calling `library(dplyr)`. Secondly, when pushing to GitHub, we need our figure files stored in a folder called `figure`
+so we might as well make our code store them there for us. We can make that happen by using `opts_chunk` which in turn requires loading the `knitr` library explicitly. Finally we load `lattice` to be able to use `xyplot`. Here's how it's done:
 
 ```r
 suppressMessages(library(dplyr))
@@ -11,10 +11,10 @@ suppressMessages(library(knitr))
 opts_chunk$set(fig.path = "./figure/")
 library(lattice)
 ```
-(In case you wonder why the `library` calls are put inside a call to `supressMessage`, it's just to not have the output made when loading the packages show up in the document. Alternatively, we could achieve this by specifying `{r echo=FALSE}` but the project text specifcially mentions that all code blocks should begin with `{r echo=TRUE}`.)
+(In case you wonder why the `library` calls are put inside a call to `supressMessage`, it's just to avoid having the output that is generated when loading the packages show up in this document. Alternatively, we could achieve this by specifying `{r echo=FALSE}` but the project instructions specifcally state that all code blocks should begin with `{r echo=TRUE}`.)
 
 ## Loading and preprocessing the data
-The first task of the project is to load the data. We load it into a variable called `activity.csv` It's easily done as shown below. For good measure, we print the dimensions of the variable. This tells us how many rows and columns the data contains.
+The first task of the project is to load the data. We load it into a data frame called `activity`. It's easily done as shown below. For good measure, we print the dimensions of the data frame. This tells us how many rows and columns the data frame contains.
 
 ```r
 activity <- read.csv(unz("activity.zip", filename = "activity.csv"))
@@ -25,7 +25,7 @@ dim(activity)
 ## [1] 17568     3
 ```
 
-## What is mean total number of steps taken per day?
+## What is the total number of steps taken per day?
 ### Calculating total number of steps per day
 Our next task is to calculate the total number of steps per day. We can do this by grouping the data by day and then calculate the sum for each group. This is fairly simple when using `dplyr`:
 
@@ -40,7 +40,7 @@ stepsPerDay <- grouped$steps
 ```
 
 ### Histogram of the daily totals
-Now that we have the total number of days for each day stored in the variable `stepsPerDay`, we can easily plut a histogram:
+Now that we have the total number of days for each day stored in the `stepsPerDay` variable, we can easily plot a histogram:
 
 ```r
 hist(stepsPerDay,
@@ -79,7 +79,7 @@ median
 
 ## What is the average daily activity pattern?
 ### Calculating the daily pattern
-Since we have data in 5-minute intervals for several days, it makes sence to calculte the daily activity pattern. This is our next task. For each 5 minute interval we will calculate the average over all the days. Again `dplyr` comes to our rescue: we can easily group the data by 5-minute interval and the calculate the average step count for each group:
+Since we have data in 5-minute intervals for several days, it makes sense to calculte the daily activity pattern. This is our next task. For each 5-minute interval, we will calculate the average over all the days. Again `dplyr` comes to our rescue: we can easily group the data by 5-minute interval and then calculate the average step count for each group:
 
 
 ```r
@@ -126,7 +126,7 @@ As shown above, maximum number of steps is 206.2 which is found in interval numb
 
 ## Imputing missing values
 ### Counting the missing values
-Our next task is to calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs). The rows with NAs are not considered 'complete' by R, so we can use the `complete.cases` function. We then simply count the rows that are not complete. Note that we can use the `SUM` function for counting because `FALSE` counts as 0 and `TRUE` counts as 1.
+Our next task is to calculate and report the total number of missing values in the dataset (i.e. the total number of rows with NAs). The rows with NAs are not considered 'complete' by R, so we can use the `complete.cases` function. We then simply count the rows that are not complete. Note that we can use the `sum` function for counting because `FALSE` counts as 0 and `TRUE` counts as 1.
 
 ```r
 sum(complete.cases(activity) == FALSE)
@@ -139,7 +139,7 @@ sum(complete.cases(activity) == FALSE)
 ### Replacing missing values with 5-minute interval means
 We need to impute missing values. A simple but sufficient strategy is to just use the mean for that 5-minute interval. We already have the interval means stored in `intervalMeans`. So, all we need to do is use those to fill in the missing values.
 
-First we will merge the intervalMeans onto the original data, creating a new data frame:
+First we will merge the interva means onto the original data, creating a new data frame:
 
 ```r
 activityImputed <- merge(activity, intervalMeans, by = "interval")
@@ -165,7 +165,7 @@ stepsPerDayImputed <- groupedImputed$steps
 ```
 
 ### Plotting the histogram
-Finally we are ready to plot the histogram using the daily totals we stored in the `stepsPerDayFixed` in the previous step:
+Finally we are ready to plot the histogram using the daily totals we stored in the `stepsPerDayImputed` in the previous step:
 
 ```r
 hist(stepsPerDayImputed,
@@ -226,7 +226,7 @@ activityImputed$dayType <- as.factor(sapply(activityImputed$date, FUN=dayType))
 ```
 
 ### Filtering, grouping and calculating means
-Now all we need to is group the data by our new "dayType" variable as well as the  5-minute interval and then calculate the means -- all using `dplyr`:
+Now all we need to is group the data by our new `dayType` variable as well as the  5-minute interval and then calculate the means -- all using `dplyr`:
 
 ```r
 intervalMeansImputed <- activityImputed %>%
@@ -249,3 +249,5 @@ xyplot(
 ```
 
 ![](./figure/panelplot-1.png) 
+
+As the plot shows, there tends to be a bit more activity during the early morning on the weekdays compared to the weekends. In the weekends, on the other hand, there is a bit more activity during the day.
