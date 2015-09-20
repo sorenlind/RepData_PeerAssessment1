@@ -39,7 +39,7 @@ stepsPerDay <- grouped$steps
 
 ### Histogram of the daily totals
 Now that we have the total number of days for each day stored in the variable `stepsPerDay`, we can easily plut a histogram:
-```{r echo=TRUE}
+```{r histogram1, echo=TRUE}
 hist(stepsPerDay,
      col = "red",
      breaks = 5,
@@ -77,7 +77,7 @@ intervalMeans <- activity %>%
 
 ### Plotting the daily pattern
 Using the base plotting system we can plot the activity pattern like so:
-```{r echo=TRUE}
+```{r meansplot, echo=TRUE}
 plot(intervalMeans, type = "l", ylab = "Mean step count")
 ```
 
@@ -127,7 +127,7 @@ stepsPerDayImputed <- groupedImputed$steps
 
 ### Plotting the histogram
 Finally we are ready to plot the histogram using the daily totals we stored in the `stepsPerDayFixed` in the previous step:
-```{r echo=TRUE}
+```{r histogram2, echo=TRUE}
 hist(stepsPerDayImputed,
      col = "red",
      breaks = 5,
@@ -190,7 +190,7 @@ intervalMeansWeekdays <- activityImputed %>%
 
 ### Panel plot
 Finally we can make our panel plot:
-```{r ecaho=TRUE, fig.height=8}
+```{r panelplot, echo=TRUE, fig.height=8}
 par(mfrow=c(2,1)) 
 plot(intervalMeansWeekdays, type = "l", main = "Weekdays")
 plot(intervalMeansWeekend, type = "l", main = "Weekend")
