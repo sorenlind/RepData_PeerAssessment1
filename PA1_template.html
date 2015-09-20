@@ -67,10 +67,10 @@ img {
 <p>Søren Lind Kristiansen</p>
 <div id="notes" class="section level2">
 <h2>Notes</h2>
-<p>Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package <code>dplyr</code> so we have to load that using <code>library(dplyr)</code>. Secondly, when pushing to GitHub, we need our figure files stored in a folder called <code>figures</code> so we might as well make our code store them there for us. We can make it happen by using <code>opts_chunk</code> which in turn requires loading the <code>knitr</code> library explicitly. Finally we load <code>lattice</code> to be able to use <code>xyplot</code>. Here’s how it’s done:</p>
+<p>Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package <code>dplyr</code> so we have to load that using <code>library(dplyr)</code>. Secondly, when pushing to GitHub, we need our figure files stored in a folder called <code>figure</code> so we might as well make our code store them there for us. We can make it happen by using <code>opts_chunk</code> which in turn requires loading the <code>knitr</code> library explicitly. Finally we load <code>lattice</code> to be able to use <code>xyplot</code>. Here’s how it’s done:</p>
 <pre class="r"><code>suppressMessages(library(dplyr))
 suppressMessages(library(knitr))
-opts_chunk$set(fig.path = &quot;./figures/&quot;)
+opts_chunk$set(fig.path = &quot;./figure/&quot;)
 library(lattice)</code></pre>
 <p>(In case you wonder why the <code>library</code> calls are put inside a call to <code>supressMessage</code>, it’s just to not have the output made when loading the packages show up in the document. Alternatively, we could achieve this by specifying <code>{r echo=FALSE}</code> but the project text specifcially mentions that all code blocks should begin with <code>{r echo=TRUE}</code>.)</p>
 </div>

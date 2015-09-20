@@ -2,13 +2,13 @@
 Søren Lind Kristiansen
 
 ## Notes
-Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package `dplyr` so we have to load that using `library(dplyr)`. Secondly, when pushing to GitHub, we need our figure files stored in a folder called `figures`
+Before we begin, we need to do a bit of setting up. First, when manipulating the data, we will use the package `dplyr` so we have to load that using `library(dplyr)`. Secondly, when pushing to GitHub, we need our figure files stored in a folder called `figure`
 so we might as well make our code store them there for us. We can make it happen by using `opts_chunk` which in turn requires loading the `knitr` library explicitly. Finally we load `lattice` to be able to use `xyplot`. Here's how it's done:
 
 ```r
 suppressMessages(library(dplyr))
 suppressMessages(library(knitr))
-opts_chunk$set(fig.path = "./figures/")
+opts_chunk$set(fig.path = "./figure/")
 library(lattice)
 ```
 (In case you wonder why the `library` calls are put inside a call to `supressMessage`, it's just to not have the output made when loading the packages show up in the document. Alternatively, we could achieve this by specifying `{r echo=FALSE}` but the project text specifcially mentions that all code blocks should begin with `{r echo=TRUE}`.)
@@ -50,7 +50,7 @@ hist(stepsPerDay,
      xlab = "Steps per day")
 ```
 
-![](./figures/histogram1-1.png) 
+![](./figure/histogram1-1.png) 
 
 ### Mean of daily totals
 Our next task is to calculate the mean of the daily totals. This can be done using the `mean` function:
@@ -98,7 +98,7 @@ Using the base plotting system we can plot the activity pattern like so:
 plot(intervalMeans, type = "l", ylab = "Number of steps")
 ```
 
-![](./figures/meansplot-1.png) 
+![](./figure/meansplot-1.png) 
 
 ### 5-minute interval with the maximum number of steps
 We must now find out which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps:
@@ -175,7 +175,7 @@ hist(stepsPerDayImputed,
      xlab = "Steps per day")
 ```
 
-![](./figures/histogram2-1.png) 
+![](./figure/histogram2-1.png) 
 
 ### Comparing mean and median
 Our task is now to calculate the mean and median on the data with the filled in values and compare them to the mean and median of the original data.
@@ -248,4 +248,4 @@ xyplot(
   ylab = "Number of steps")
 ```
 
-![](./figures/panelplot-1.png) 
+![](./figure/panelplot-1.png) 
